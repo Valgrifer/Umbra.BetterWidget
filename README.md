@@ -56,22 +56,11 @@ accordingly.
         <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
     </PropertyGroup>
     <PropertyGroup>
-        <!-- Replace this with Umbra's directory is you have a local dev version installed. -->
+        <!-- Replace this with Umbra's directory is you have a local dev version installed. Mind the trailing backlash. -->
         <!-- If you have Umbra installed through Dalamud, you can leave this as-is. -->
-        <UmbraLibPath>C:\Path\To\Umbra</UmbraLibPath>
+        <!-- Credits to Lorosia for the dynamic Umbra folder finding. -->
+        <UmbraLibPath>$([System.IO.Directory]::GetDirectories($(appdata)\XIVLauncher\installedPlugins\Umbra\)[0])\</UmbraLibPath>
     </PropertyGroup>
-
-    <Target Name="ResolveUmbraLibPath" BeforeTargets="PrepareForBuild">
-        <PropertyGroup>
-            <UmbraRootPath>$(appdata)\XIVLauncher\installedPlugins\Umbra</UmbraRootPath>
-        </PropertyGroup>
-        <ItemGroup>
-            <UmbraDirectories Include="$(UmbraRootPath)\*" />
-        </ItemGroup>
-        <PropertyGroup Condition="@(UmbraDirectories->Count()) == 1">
-            <UmbraLibPath>@(UmbraDirectories)\</UmbraLibPath>
-        </PropertyGroup>
-    </Target>
 
     <PropertyGroup>
         <TargetFramework>net8.0-windows</TargetFramework>
@@ -81,7 +70,7 @@ accordingly.
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-        <OutputPath>out\$(Configuration)\</OutputPath>
+        <OutputPath>..\out\$(Configuration)\</OutputPath>
     </PropertyGroup>
 
     <PropertyGroup>
