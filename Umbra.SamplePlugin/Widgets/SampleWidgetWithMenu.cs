@@ -40,14 +40,6 @@ public class SampleWidgetWithMenu(
     private IToastGui ToastGui { get; set; } = Framework.Service<IToastGui>();
 
     /// <inheritdoc/>
-    protected override IEnumerable<IWidgetConfigVariable> GetConfigVariables()
-    {
-        // If you don't need any configuration variables, you can return an empty list.
-        // This will result the "cog" button to be in a disabled state.
-        return [];
-    }
-
-    /// <inheritdoc/>
     protected override void OnLoad()
     {
         // Let's add some buttons.
@@ -65,6 +57,7 @@ public class SampleWidgetWithMenu(
             Icon = 14u,
             AltText = "Alt-Text here"
         });
+        
         group.Add(new MenuPopup.Button("MyButton3") {
             OnClick = () => OnItemClicked("Button 3"),
             Icon = 14u,
