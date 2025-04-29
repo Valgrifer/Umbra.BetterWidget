@@ -59,6 +59,7 @@ public class SampleWidgetWithMenu(
 
         // You can also add groups...
         var group = new MenuPopup.Group("A button group");
+        
         group.Add(new MenuPopup.Button("MyButton2") {
             OnClick = () => OnItemClicked("Button 2"),
             Icon = 14u,
@@ -69,6 +70,7 @@ public class SampleWidgetWithMenu(
             Icon = 14u,
             AltText = "Alt-Text here"
         });
+        
         Popup.Add(group);
     }
 
