@@ -20,8 +20,17 @@ public class SampleWidgetWithMenu(
     WidgetInfo info,
     string? guid = null,
     Dictionary<string, object>? configValues = null
-) : DefaultToolbarWidget(info, guid, configValues)
+) : StandardToolbarWidget(info, guid, configValues)
 {
+    /// <summary>
+    /// Define which features of the "StandardToolbarWidget" this widget
+    /// should be using.
+    /// </summary>
+    protected override StandardWidgetFeatures Features =>
+        StandardWidgetFeatures.Text |
+        StandardWidgetFeatures.Icon |
+        StandardWidgetFeatures.CustomizableIcon;
+
     /// <inheritdoc/>
     public override MenuPopup Popup { get; } = new();
 
@@ -39,40 +48,35 @@ public class SampleWidgetWithMenu(
     }
 
     /// <inheritdoc/>
-    protected override void Initialize()
+    protected override void OnLoad()
     {
         // Let's add some buttons.
-        Popup.AddButton(
-            "MyButton",
-            label: "A button",
-            onClick: () => OnItemClicked("Button 1"),
-            iconId: 14u,
-            altText: "Alt-Text here"
-        );
+        Popup.Add(new MenuPopup.Button("MyButton") {
+            OnClick = () => OnItemClicked("Button 1"),
+            Icon = 14u,
+            AltText = "Alt-Text here"
+        });
 
         // You can also add groups...
-        Popup.AddGroup("Group1", "A button group");
-        Popup.AddButton("Btn1", "My first button", groupId: "Group1", onClick: () => OnItemClicked("Button 1"), iconId: 14u);
-        Popup.AddButton("Btn2", "My second button", groupId: "Group1", onClick: () => OnItemClicked("Button 2"));
-
-        Popup.AddGroup("Group2", "Another button group");
-        Popup.AddButton("Btn3", "My third button", groupId: "Group2", onClick: () => OnItemClicked("Button 3"));
-        Popup.AddButton("Btn4", "My fourth button", groupId: "Group2", onClick: () => OnItemClicked("Button 4"));
+        var group = new MenuPopup.Group("A button group");
+        group.Add(new MenuPopup.Button("MyButton2") {
+            OnClick = () => OnItemClicked("Button 2"),
+            Icon = 14u,
+            AltText = "Alt-Text here"
+        });
+        group.Add(new MenuPopup.Button("MyButton3") {
+            OnClick = () => OnItemClicked("Button 3"),
+            Icon = 14u,
+            AltText = "Alt-Text here"
+        });
+        Popup.Add(group);
     }
 
     /// <inheritdoc/>
-    protected override void OnUpdate()
+    protected override void OnDraw()
     {
         // Labels can be updated during runtime as well.
-        SetLabel("A sample menu");
-
-        if (!Popup.IsOpen) {
-            return;
-        }
-
-        // Button states can be updated during runtime by referencing their ids.
-        Popup.SetButtonDisabled("Btn3", true);
-        Popup.SetButtonIcon("Btn1", 15u);
+        SetText("A sample menu");
     }
 
     private void OnItemClicked(string id)

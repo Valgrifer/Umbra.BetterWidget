@@ -19,8 +19,17 @@ public class SampleWidget(
     WidgetInfo                  info,
     string?                     guid         = null,
     Dictionary<string, object>? configValues = null
-) : DefaultToolbarWidget(info, guid, configValues)
+) : StandardToolbarWidget(info, guid, configValues)
 {
+    /// <summary>
+    /// Define which features of the "StandardToolbarWidget" this widget
+    /// should be using.
+    /// </summary>
+    protected override StandardWidgetFeatures Features =>
+        StandardWidgetFeatures.Text |
+        StandardWidgetFeatures.Icon |
+        StandardWidgetFeatures.CustomizableIcon;
+
     /// <summary>
     /// Defines the popup of this widget. Setting a value will make the widget
     /// interactive and will render the popup node when the widget is clicked.
@@ -31,16 +40,12 @@ public class SampleWidget(
     /// Returns a list of configuration variables that can be set by the user
     /// for instances of this widget.
     /// </summary>
-    /// <returns></returns>
     protected override IEnumerable<IWidgetConfigVariable> GetConfigVariables()
     {
         return [
-            new BooleanWidgetConfigVariable(
-                "Decorate",
-                "Decorate the widget",
-                "Whether to decorate the widget with a background and border.",
-                true
-            )
+            // When extending from StandardToolbarWidget, always make sure to
+            // also add the base variables.
+            ..base.GetConfigVariables(),
         ];
     }
 
@@ -49,10 +54,10 @@ public class SampleWidget(
     /// to the toolbar. You can use this method to pull in any data or perform
     /// one-time operations that are required for the widget to function.
     /// </summary>
-    protected override void Initialize()
+    protected override void OnLoad()
     {
-        SetLabel("A sample widget");
-        SetLeftIcon(14);
+        SetText("A sample widget");
+        SetGameIconId(14);
     }
 
     /// <summary>
@@ -60,11 +65,15 @@ public class SampleWidget(
     /// method to update the state of the widget based on the current game state
     /// or user configuration.
     /// </summary>
-    protected override void OnUpdate()
+    protected override void OnDraw()
     {
-        // Set the widget to be ghosted if the user has disabled decoration.
-        // Note that we do this in the update method rather than the initialize
-        // method to allow the user to change the setting at runtime.
-        SetGhost(!GetConfigValue<bool>("Decorate"));
+    }
+
+    /// <summary>
+    /// Invoked when the widget is removed from the toolbar or disposed of due
+    /// to other reasons such as config profile changes, Umbra unloading, etc.
+    /// </summary>
+    protected override void OnUnload()
+    {
     }
 }
