@@ -18,15 +18,6 @@ internal sealed partial class TeleportWidget
                 Category  = I18N.Translate("Widget.ConfigCategory.MenuAppearance"),
             },
             
-            new EnumWidgetConfigVariable<TeleportPositionEnum>(
-                "SidePanelPosition",
-                "Side Panel Position",
-                "Side Panel Position cause Umbra Config variable is blocked.",
-                TeleportPositionEnum.Bottom
-            ) {
-                Category  = I18N.Translate("Widget.ConfigCategory.MenuAppearance"),
-            },
-            
             new SelectWidgetConfigVariable(
                 "DefaultOpenedGroupName",
                 I18N.Translate("Widget.Teleport.Config.DefaultOpenedGroupName.Name"),

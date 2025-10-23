@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Umbra.Common.Utility;
 
 namespace Umbra.BetterWidget.Widgets.BetterTeleport;
 
@@ -49,8 +50,9 @@ internal sealed partial class TeleportWidgetPopup
         _favoritesData = data;
     
         Favorites.Clear();
-        
-        Favorites.AddRange(JsonConvert.DeserializeObject<List<TeleportData>>(Utils.Decode(_favoritesData, "[]"), TeleportConverter.DefaultSettings)?.ToList() ?? []);
+
+        var decompress = Compression.Decompress(_favoritesData);
+        Favorites.AddRange(JsonConvert.DeserializeObject<List<TeleportData>>(decompress != "{}" ? decompress : "[]", TeleportConverter.DefaultSettings)?.ToList() ?? []);
     }
 
     /// <summary>
@@ -59,7 +61,7 @@ internal sealed partial class TeleportWidgetPopup
     private void PersistFavorites()
     {
         string oldData = _favoritesData;
-        _favoritesData = Utils.Encode(JsonConvert.SerializeObject(Favorites, TeleportConverter.DefaultSettings));
+        _favoritesData = Compression.Compress(JsonConvert.SerializeObject(Favorites, TeleportConverter.DefaultSettings));
         if (oldData != _favoritesData)
             OnFavoritesChanged?.Invoke(_favoritesData);
     }

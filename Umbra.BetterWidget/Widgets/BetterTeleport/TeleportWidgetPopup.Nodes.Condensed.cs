@@ -14,7 +14,7 @@ internal partial class TeleportWidgetPopup
     {
         CondensedInterfaceNode.Clear();
         CondensedInterfaceNode.Style.IsVisible = true;
-        CondensedInterfaceNode.AppendChild(new() { ClassList = ["side-panel", SidePanelPosition.ToString().ToLower() ] });
+        CondensedInterfaceNode.AppendChild(new() { ClassList = ["side-panel", Utils.IsTopAligned ? "top" : "bottom" ] });
         CondensedSidePanelNode.AppendChild(new() { ClassList = ["side-panel-spacer"], SortIndex = int.MinValue });
         
         Node contentsWrapper = new() {

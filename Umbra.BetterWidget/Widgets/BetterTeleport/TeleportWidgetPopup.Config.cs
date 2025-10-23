@@ -2,7 +2,6 @@
 
 internal partial class TeleportWidgetPopup
 {
-    private TeleportPositionEnum SidePanelPosition  { get; set; } = TeleportPositionEnum.Bottom;
     private bool             ShowNotification       { get; set; } = true;
     private string           DefaultOpenedGroupName { get; set; } = "Auto";
     private bool             OpenCategoryOnHover    { get; set; } = false;
@@ -15,7 +14,6 @@ internal partial class TeleportWidgetPopup
 
     protected override void UpdateConfigVariables(ToolbarWidget widget)
     {
-        SidePanelPosition      = widget.GetConfigValue<TeleportPositionEnum>("SidePanelPosition");
         ShowNotification       = widget.GetConfigValue<bool>("ShowNotification");
         DefaultOpenedGroupName = widget.GetConfigValue<string>("DefaultOpenedGroupName");
         OpenCategoryOnHover    = widget.GetConfigValue<bool>("OpenCategoryOnHover");
