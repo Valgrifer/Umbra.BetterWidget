@@ -2,6 +2,7 @@
 <Project Sdk="Dalamud.NET.Sdk/13.0.0">
     <PropertyGroup>
         <UmbraLibPath>$([System.IO.Directory]::GetDirectories($(appdata)\XIVLauncher\installedPlugins\Umbra\)[0])\</UmbraLibPath>
+        <Use_DalamudPackager>false</Use_DalamudPackager>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -13,7 +14,7 @@
         <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
         <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-        <OutputPath>..\out\$(Configuration)\</OutputPath>
+        <OutputPath>$(SolutionDir)\bin\$(Configuration)\</OutputPath>
     </PropertyGroup>
 
     <PropertyGroup>
