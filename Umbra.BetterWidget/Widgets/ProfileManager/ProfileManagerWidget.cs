@@ -22,7 +22,7 @@ internal sealed partial class ProfileManagerWidget(
         StandardWidgetFeatures.Icon |
         StandardWidgetFeatures.CustomizableIcon;
 
-    protected override string DefaultIconType   => IconTypeGameIcon;
+    protected override string DefaultIconType => IconTypeGameIcon;
     protected override uint DefaultGameIconId => 65067;
 
     public override string GetInstanceName()
