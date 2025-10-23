@@ -1,4 +1,6 @@
-﻿namespace Umbra.BetterWidget.Widgets.ProfileManager;
+﻿using Dalamud.Interface.ImGuiNotification;
+
+namespace Umbra.BetterWidget.Widgets.ProfileManager;
 
 internal sealed partial class ProfileManagerPopup : WidgetPopup
 {
@@ -14,6 +16,8 @@ internal sealed partial class ProfileManagerPopup : WidgetPopup
     protected override Node Node { get; }
 
     private UdtDocument Document { get; } = Utils.DocumentFrom("umbra.widgets.popup_dynamic_menu.xml");
+    
+    private readonly INotificationManager _notificationManager = Framework.Service<INotificationManager>();
 
     public ProfileManagerPopup()
     {
@@ -72,7 +76,31 @@ internal sealed partial class ProfileManagerPopup : WidgetPopup
         
         if (profile == null) return;
 
-        profile.SetStateAsync(!profile.IsEnabled);
+        bool newState = !profile.IsEnabled;
+
         Close();
+        _notificationManager.AddNotification(new Notification
+        {
+            Content = newState ? $"The collection \"{profile.Name}\" will be activated." : $"The collection \"{profile.Name}\" will be deactivated.",
+            Type = NotificationType.Info,
+            Minimized = false
+        });
+        profile.SetStateAsync(newState).ContinueWith(task =>
+        {
+            if (task.IsCompletedSuccessfully)
+                _notificationManager.AddNotification(new Notification
+                {
+                    Content = newState ? $"The collection \"{profile.Name}\" has been successfully enabled." : $"The collection \"{profile.Name}\" has been successfully disabled.",
+                    Type = NotificationType.Success,
+                    Minimized = false
+                });
+            else
+                _notificationManager.AddNotification(new Notification
+                {
+                    Content = newState ? $"Failed to activate the collection \"{profile.Name}\"." : $"Failed to deactivate the collection \"{profile.Name}\".",
+                    Type = NotificationType.Error,
+                    Minimized = false
+                });
+        });
     }
 }
