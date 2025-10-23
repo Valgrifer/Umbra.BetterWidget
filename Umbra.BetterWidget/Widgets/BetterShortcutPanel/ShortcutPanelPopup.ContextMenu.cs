@@ -16,10 +16,10 @@ public sealed partial class ShortcutPanelPopup
                     OnClick = () =>
                     {
                         CustomShortcutEntry entry = new() {
-                            Ci = 14,
-                            Cl = "Custom Item",
-                            Ct = "Chat",
-                            Cc = "/dance",
+                            IconId = 14,
+                            Label = "Custom Item",
+                            Value = "Chat",
+                            ActionType = "/dance",
                         };
                         
                         AssignShortcut(_selectedCategory, _selectedSlotIndex, entry);

@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System.IO;
-using System.IO.Compression;
-using System.Text;
+using Umbra.Common.Utility;
 
 namespace Umbra.BetterWidget.Widgets.BetterShortcutPanel;
 
@@ -41,7 +39,7 @@ public sealed partial class ShortcutPanelPopup
     private void EncodeShortcutData()
     {
         string oldData = _shortcutData;
-        _shortcutData = $"SPD|{Utils.Encode(JsonConvert.SerializeObject(_shortcuts, ShortcutConverter.DefaultSettings))}";
+        _shortcutData = $"SPD|{Compression.Compress(JsonConvert.SerializeObject(_shortcuts, ShortcutConverter.DefaultSettings))}";
         if (oldData != _shortcutData) OnShortcutsChanged?.Invoke(_shortcutData);
     }
 
@@ -55,7 +53,7 @@ public sealed partial class ShortcutPanelPopup
         if (parts[0] != "SPD") throw new("Invalid shortcut data. Header mismatch.");
 
         _shortcutData = data;
-        _shortcuts = JsonConvert.DeserializeObject<Dictionary<byte, Dictionary<int, ShortcutEntry>>>(Utils.Decode(parts[1]), ShortcutConverter.DefaultSettings) ?? [];
+        _shortcuts = JsonConvert.DeserializeObject<Dictionary<byte, Dictionary<int, ShortcutEntry>>>(Compression.Decompress(parts[1]), ShortcutConverter.DefaultSettings) ?? [];
     }
 
     // Contains short property names to reduce the size of the JSON data.
@@ -66,16 +64,16 @@ public sealed partial class ShortcutPanelPopup
         /// The type id of the provider that provided this item.
         /// Applicable to ShortcutProvider items only.
         /// </summary>
-        public string St { get; set; } = null!;
+        [JsonProperty("St")] public string Type { get; set; } = null!;
 
         public string Serialize()
         {
-            return Utils.Encode(JsonConvert.SerializeObject(this, ShortcutConverter.DefaultSettings));
+            return Compression.Compress(JsonConvert.SerializeObject(this, ShortcutConverter.DefaultSettings));
         }
         
         public static ShortcutEntry? Deserialize(string data)
         {
-            return JsonConvert.DeserializeObject<ShortcutEntry>(Utils.Decode(data), ShortcutConverter.DefaultSettings);
+            return JsonConvert.DeserializeObject<ShortcutEntry>(Compression.Decompress(data), ShortcutConverter.DefaultSettings);
         }
     }
     
@@ -86,7 +84,7 @@ public sealed partial class ShortcutPanelPopup
         /// The ID of the item that was picked using a provider.
         /// Applicable to ShortcutProvider items only.
         /// </summary>
-        public uint Pi { get; set; }
+        [JsonProperty("Pi")] public uint Id { get; set; }
     }
     
     [Serializable]
@@ -94,37 +92,37 @@ public sealed partial class ShortcutPanelPopup
     {
         public CustomShortcutEntry()
         {
-            St = "CI";
+            Type = "CI";
         }
         
         /// <summary>
         /// The item label.
         /// Applicable to custom items only.
         /// </summary>
-        public string Cl { get; set; } = null!;
+        [JsonProperty("Cl")] public string Label { get; set; } = null!;
 
         /// <summary>
         /// The item icon ID.
         /// Applicable to custom items only.
         /// </summary>
-        public uint Ci { get; set; }
+        [JsonProperty("Ci")] public uint IconId { get; set; }
 
         /// <summary>
         /// The item icon color.
         /// Applicable to custom items only.
         /// </summary>
-        public uint Cj { get; set; } = 0xFFFFFFFF;
+        [JsonProperty("Cj")] public uint IconColor { get; set; } = 0xFFFFFFFF;
 
         /// <summary>
         /// The chat command or website URL.
         /// Applicable to custom items only.
         /// </summary>
-        public string Cc { get; set; } = null!;
+        [JsonProperty("Cc")] public string ActionType { get; set; } = null!;
 
         /// <summary>
         /// The type of custom command (ChatCommand or WebLink).
         /// Applicable to custom items only.
         /// </summary>
-        public string Ct { get; set; } = null!;
+        [JsonProperty("Ct")] public string Value { get; set; } = null!;
     }
 }

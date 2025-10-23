@@ -14,26 +14,26 @@ public sealed partial class ShortcutPanelPopup
         StringVariable labelVar = new("Label") {
             Name        = I18N.Translate("Widget.DynamicMenu.CustomItemEditor.Label.Name"),
             Description = I18N.Translate("Widget.DynamicMenu.CustomItemEditor.Label.Description"),
-            Value       = entry.Cl,
+            Value       = entry.Label,
             MaxLength   = 100,
         };
 
         GameIconVariable iconVar = new("Icon") {
             Name        = I18N.Translate("Widget.DynamicMenu.CustomItemEditor.Icon.Name"),
             Description = I18N.Translate("Widget.DynamicMenu.CustomItemEditor.Icon.Description"),
-            Value       = entry.Ci,
+            Value       = entry.IconId,
         };
 
         ColorVariable iconColorVar = new("IconColor") {
             Name        = I18N.Translate("Widget.DynamicMenu.CustomItemEditor.IconColor.Name"),
             Description = I18N.Translate("Widget.DynamicMenu.CustomItemEditor.IconColor.Description"),
-            Value       = entry.Cj,
+            Value       = entry.IconColor,
         };
 
         StringSelectVariable typeVar = new("Type") {
             Name        = I18N.Translate("Widget.DynamicMenu.CustomItemEditor.Type.Name"),
             Description = I18N.Translate("Widget.DynamicMenu.CustomItemEditor.Type.Description"),
-            Value       = entry.Ct,
+            Value       = entry.Value,
             Choices = new() {
                 { "Chat", I18N.Translate("Widget.DynamicMenu.CustomItemEditor.Type.Option.ChatCommand") },
                 { "URL", I18N.Translate("Widget.DynamicMenu.CustomItemEditor.Type.Option.WebLink") },
@@ -43,7 +43,7 @@ public sealed partial class ShortcutPanelPopup
         StringVariable commandVar = new("Command") {
             Name        = I18N.Translate("Widget.DynamicMenu.CustomItemEditor.Command.Name"),
             Description = I18N.Translate("Widget.DynamicMenu.CustomItemEditor.Command.Description"),
-            Value       = entry.Cc,
+            Value       = entry.ActionType,
             MaxLength   = 4096,
         };
 
@@ -57,11 +57,11 @@ public sealed partial class ShortcutPanelPopup
                 "CustomShortcutEditor",
                 window,
                 _ => {
-                    entry.Cl = labelVar.Value;
-                    entry.Ci = iconVar.Value;
-                    entry.Cj = iconColorVar.Value;
-                    entry.Ct = typeVar.Value;
-                    entry.Cc = commandVar.Value;
+                    entry.Label = labelVar.Value;
+                    entry.IconId = iconVar.Value;
+                    entry.IconColor = iconColorVar.Value;
+                    entry.Value = typeVar.Value;
+                    entry.ActionType = commandVar.Value;
 
                     AssignShortcut(_selectedCategory, _selectedSlotIndex, entry);
                     SetButton(_selectedCategory, _selectedSlotIndex, entry);

@@ -66,7 +66,7 @@ public sealed partial class ShortcutPanelPopup : ButtonGridPopup
     {
         if (!_buttonActions.TryGetValue(categoryId, out Dictionary<int, ShortcutEntry?>? slots)) return;
         if (!slots.TryGetValue(slotId, out ShortcutEntry? action)) return;
-        if (null == action?.St) return;
+        if (null == action?.Type) return;
 
         switch (action)
         {
@@ -74,10 +74,10 @@ public sealed partial class ShortcutPanelPopup : ButtonGridPopup
                 InvokeCustomEntry(entry);
                 return;
             case GameShortcutEntry entry:
-                AbstractShortcutProvider? provider = Providers.GetProvider(action.St);
+                AbstractShortcutProvider? provider = Providers.GetProvider(action.Type);
                 if (provider == null) return;
 
-                provider.OnInvokeShortcut(categoryId, slotId, entry.Pi, WidgetInstanceId);
+                provider.OnInvokeShortcut(categoryId, slotId, entry.Id, WidgetInstanceId);
                 return;
         }
 
@@ -86,12 +86,12 @@ public sealed partial class ShortcutPanelPopup : ButtonGridPopup
 
     private void InvokeCustomEntry(CustomShortcutEntry entry)
     {
-        if (string.IsNullOrWhiteSpace(entry.Ct)) return;
-        if (string.IsNullOrWhiteSpace(entry.Cc)) return;
+        if (string.IsNullOrWhiteSpace(entry.Value)) return;
+        if (string.IsNullOrWhiteSpace(entry.ActionType)) return;
 
-        string cmd = entry.Cc.Trim();
+        string cmd = entry.ActionType.Trim();
 
-        switch (entry.Ct) {
+        switch (entry.Value) {
             case "Chat":
                 if (string.IsNullOrEmpty(cmd) || !cmd.StartsWith('/')) {
                     return;
@@ -112,7 +112,7 @@ public sealed partial class ShortcutPanelPopup : ButtonGridPopup
                 Util.OpenLink(cmd);
                 return;
             default:
-                Logger.Warning($"Invalid custom entry type: {entry.Ct} for command: {cmd}");
+                Logger.Warning($"Invalid custom entry type: {entry.Value} for command: {cmd}");
                 break;
         }
     }

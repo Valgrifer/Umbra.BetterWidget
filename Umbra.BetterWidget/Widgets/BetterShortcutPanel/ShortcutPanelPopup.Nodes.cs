@@ -73,16 +73,16 @@ public sealed partial class ShortcutPanelPopup
             
                 SetSlotState(node, new() {
                     Id = 0,
-                    Name = entry.Cl,
-                    IconId = entry.Ci,
-                    IconColor = entry.Cj,
+                    Name = entry.Label,
+                    IconId = entry.IconId,
+                    IconColor = entry.IconColor,
                 });
                 AssignAction(categoryId, slotId, data);
                 return;
             case GameShortcutEntry entry:
-                string typeId = entry.St;
+                string typeId = entry.Type;
                 
-                uint itemId = entry.Pi;
+                uint itemId = entry.Id;
 
                 if (typeId == string.Empty) {
                     ClearSlot(node, categoryId, slotId);

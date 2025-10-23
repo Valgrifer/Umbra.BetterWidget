@@ -5,8 +5,8 @@ namespace Umbra.BetterWidget.Widgets.BetterShortcutPanel.Windows;
 internal abstract partial class PickerWindowBase : Window
 {
     public ShortcutPanelPopup.ShortcutEntry? PickedId => _pickedItemId == null ? null : new ShortcutPanelPopup.GameShortcutEntry {
-        St = TypeId,
-        Pi = (uint) _pickedItemId,
+        Type = TypeId,
+        Id = (uint) _pickedItemId,
     };
 
     protected override Vector2 MinSize     { get; } = new(300, 512);
