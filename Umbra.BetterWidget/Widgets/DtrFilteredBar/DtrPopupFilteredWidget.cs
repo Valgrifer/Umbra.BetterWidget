@@ -36,8 +36,8 @@ internal sealed partial class DtrPopupFilteredWidget(
     {
         var entries = SelectedEntries;
 
-        var toAdd = _repository.GetEntries().Where(e => entries.Contains(e.Name) != GetConfigValue<bool>("HasBlacklists"));
-        var toRemove = _repository.GetEntries().Where(e => entries.Contains(e.Name) == GetConfigValue<bool>("HasBlacklists"));
+        var toAdd = _repository.GetEntries().Where(e => entries.Contains(e.Name) != GetConfigValue<bool>("AsBlacklists"));
+        var toRemove = _repository.GetEntries().Where(e => entries.Contains(e.Name) == GetConfigValue<bool>("AsBlacklists"));
         
         foreach (var entry in toRemove)
             OnDtrBarEntryRemoved(entry);
@@ -100,7 +100,7 @@ internal sealed partial class DtrPopupFilteredWidget(
 
     private void OnDtrBarEntryAdded(DtrBarEntry entry)
     {
-        if (SelectedEntries.Contains(entry.Name) == GetConfigValue<bool>("HasBlacklists")) return;
+        if (SelectedEntries.Contains(entry.Name) == GetConfigValue<bool>("AsBlacklists")) return;
         
         if (_entries.ContainsKey(entry.Name)) {
             OnDtrBarEntryUpdated(entry);
@@ -164,7 +164,7 @@ internal sealed partial class DtrPopupFilteredWidget(
 
     private void OnDtrBarEntryUpdated(DtrBarEntry entry)
     {
-        if (SelectedEntries.Contains(entry.Name) == GetConfigValue<bool>("HasBlacklists")) return;
+        if (SelectedEntries.Contains(entry.Name) == GetConfigValue<bool>("AsBlacklists")) return;
         
         if (!_entries.TryGetValue(entry.Name, out Node? node)) return;
 

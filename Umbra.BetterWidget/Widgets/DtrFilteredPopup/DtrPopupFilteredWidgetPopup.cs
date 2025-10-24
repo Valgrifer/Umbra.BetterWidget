@@ -14,6 +14,8 @@ public class DtrPopupFilteredWidgetPopup : WidgetPopup
     private readonly IDtrBarEntryRepository _repository = Framework.Service<IDtrBarEntryRepository>();
 
     private readonly Dictionary<string, Node> _entries = [];
+    
+    public int EntryCount => _entries.Where(node => node.Value.Style.IsVisible != false).ToArray().Length;
 
     internal DtrPopupFilteredWidgetPopup(DtrPopupFilteredWidget widget)
     {
@@ -66,8 +68,8 @@ public class DtrPopupFilteredWidgetPopup : WidgetPopup
     {
         var entries = Widget.SelectedEntries;
 
-        var toAdd = _repository.GetEntries().Where(e => entries.Contains(e.Name) != Widget.GetConfigValue<bool>("HasBlacklists"));
-        var toRemove = _repository.GetEntries().Where(e => entries.Contains(e.Name) == Widget.GetConfigValue<bool>("HasBlacklists"));
+        var toAdd = _repository.GetEntries().Where(e => entries.Contains(e.Name) != Widget.GetConfigValue<bool>("AsBlacklists"));
+        var toRemove = _repository.GetEntries().Where(e => entries.Contains(e.Name) == Widget.GetConfigValue<bool>("AsBlacklists"));
         
         foreach (var entry in toRemove)
             OnDtrBarEntryRemoved(entry);
@@ -123,7 +125,9 @@ public class DtrPopupFilteredWidgetPopup : WidgetPopup
 
     private void OnDtrBarEntryAdded(DtrBarEntry entry)
     {
-        if (Widget.SelectedEntries.Contains(entry.Name) == Widget.GetConfigValue<bool>("HasBlacklists")) return;
+        if (Widget.SelectedEntries.Contains(entry.Name) == Widget.GetConfigValue<bool>("AsBlacklists")) return;
+        
+        if ((entry.Text?.Payloads.Count ?? 0) == 0) return;
         
         if (_entries.ContainsKey(entry.Name)) {
             OnDtrBarEntryUpdated(entry);
@@ -187,7 +191,7 @@ public class DtrPopupFilteredWidgetPopup : WidgetPopup
 
     private void OnDtrBarEntryUpdated(DtrBarEntry entry)
     {
-        if (Widget.SelectedEntries.Contains(entry.Name) == Widget.GetConfigValue<bool>("HasBlacklists")) return;
+        if (Widget.SelectedEntries.Contains(entry.Name) == Widget.GetConfigValue<bool>("AsBlacklists")) return;
         
         if (!_entries.TryGetValue(entry.Name, out Node? node)) return;
 

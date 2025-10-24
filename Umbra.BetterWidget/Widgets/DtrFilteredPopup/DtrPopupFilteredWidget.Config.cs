@@ -93,9 +93,9 @@ public partial class DtrPopupFilteredWidget
                 ""
                 ),
             new BooleanWidgetConfigVariable(
-                "HasBlacklists",
-                "Has blacklists",
-                "Take list into a blacklists instead of whitelists",
+                "AsBlacklists",
+                "As blacklists",
+                "Take list into as blacklists instead of whitelists",
                 false
             ),
         ];
