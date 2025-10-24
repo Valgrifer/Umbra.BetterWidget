@@ -1,0 +1,47 @@
+﻿<udt>
+    <node class="popup"/>
+    
+    <![CDATA[
+    @import "globals";
+
+    .popup {
+        gap: 8;
+        flow-order: reverse;
+        flow: vertical;
+        padding: 8 8 3 8;
+        
+        & > .dtr-bar-entry {
+            padding: 5 13;
+            auto-size: grow fit;
+            background-color: 0;
+            stroke-color: 0;
+            border-radius: 5;
+            stroke-radius: 3;
+            stroke-width: 1;
+            stroke-inset: 1;
+            
+            &.decorated {
+                background-color: "Widget.Background";
+                stroke-color: "Widget.Border";
+                
+                &:hover {
+                    background-color: "Widget.BackgroundHover";
+                    stroke-color: "Widget.BorderHover";
+                }
+            }
+            
+            & > #Label {
+                anchor: middle-center;
+                font-size: 13;
+                color: "Widget.Text";
+                outline-color: "Widget.TextOutline";
+                outline-size: 1;
+            }
+            
+            &.decorated > #Label {
+                padding: 0 4;
+            }
+        }
+    }
+    ]]>
+</udt>
