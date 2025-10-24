@@ -8,7 +8,7 @@ namespace Umbra.BetterWidget.Widgets.DtrFilteredBar;
     "Widget.DtrBar.Description",
     ["dtr", "server", "filter", "info", "bar"]
 )]
-internal sealed partial class DtrPopupFilteredWidget(
+internal sealed partial class DtrBarFilteredWidget(
     WidgetInfo                  info,
     string?                     guid         = null,
     Dictionary<string, object>? configValues = null

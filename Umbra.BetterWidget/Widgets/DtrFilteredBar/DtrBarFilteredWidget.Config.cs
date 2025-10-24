@@ -1,6 +1,6 @@
 ﻿namespace Umbra.BetterWidget.Widgets.DtrFilteredBar;
 
-internal partial class DtrPopupFilteredWidget
+internal partial class DtrBarFilteredWidget
 {
     private Dictionary<string, string> AllEntries { get; set; } = [];
 

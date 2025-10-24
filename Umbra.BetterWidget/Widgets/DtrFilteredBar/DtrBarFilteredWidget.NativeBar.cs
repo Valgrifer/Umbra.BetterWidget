@@ -2,7 +2,7 @@
 
 namespace Umbra.BetterWidget.Widgets.DtrFilteredBar;
 
-internal unsafe partial class DtrPopupFilteredWidget
+internal unsafe partial class DtrBarFilteredWidget
 {
     private void UpdateNativeServerInfoBar()
     {
