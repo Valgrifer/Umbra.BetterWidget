@@ -399,7 +399,7 @@ internal partial class TeleportWidgetPopup
 
         public override string ToString()
         {
-            return base.ToString() + $"-{Cmd}";
+            return base.ToString() + $"-{Cmd.Replace(" ", "_")}";
         }
 
         public override bool Equals(object? obj)
