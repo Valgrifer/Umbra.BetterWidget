@@ -49,6 +49,8 @@ internal sealed partial class ProfileManagerWidget(
         } catch (Exception e) {
             Logger.Error($"Failed to load dynamic menu entries: {e.Message}");
         }
+        
+        Node.OnRightClick += _ => Framework.Service<IChatSender>().Send("/xlplugins");
     }
 
     protected override void OnUnload()
